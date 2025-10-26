@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <title>CubeSat Orbit — PWA Python (Pyodide)</title>
+  <meta name="theme-color" content="#0b1022">
+  <meta name="description" content="PWA installabile che simula orbite 2D semplificate di un CubeSat attorno alla Terra, usando Python nel browser via Pyodide.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <style>
+    :root{--bg:#0b1022;--ink:#eaf1ff;--muted:#93a4cc;--card:#101739;--line:#1c2550;--cta:#2dd4bf}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--ink);
+      background: radial-gradient(1200px 600px at 50% -20%, #172042, var(--bg));}
+    header{position:sticky;top:0;background:#0e1533cc;backdrop-filter:blur(6px);
+      border-bottom:1px solid var(--line);padding:12px}
+    header h1{margin:0;font-size:18px;letter-spacing:.2px}
+    main{max-width:1100px;margin:0 auto;padding:16px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:16px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    button{cursor:pointer;border:1px solid var(--line);background:#0f1840;color:var(--ink);
+      border-radius:10px;padding:10px 14px}
+    input,select{background:#0f1840;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    .muted{color:var(--muted)}
+    pre{white-space:pre-wrap;background:#0b1230;border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto}
+    canvas{width:100%;height:100%;display:block;background:#0a102b;border:1px solid var(--line);border-radius:12px}
+    .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;margin:4px 0}
+    footer{padding:24px 16px;color:var(--muted);text-align:center}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🛰️ CubeSat Orbit — PWA Python (Pyodide)</h1>
+  </header>
+
+  <main>
+    <div class="grid">
+      <section class="card">
+        <canvas id="view" width="1024" height="768" aria-label="Simulazione orbita 2D"></canvas>
+      </section>
+      <section class="card">
+        <div class="pill">Installabile • Offline • GitHub Pages</div>
+        <p class="muted">Propagazione 2D semplificata (Keplero, due corpi). Rendering in Canvas.</p>
+
+        <div class="row" style="gap:16px;flex-direction:column">
+          <div>
+            <label for="alt">Altitudine perigeo (km sopra la Terra)</label>
+            <input id="alt" type="number" value="500" min="160" max="36000" step="10">
+          </div>
+          <div>
+            <label for="ecc">Eccentricità (0 = circolare)</label>
+            <input id="ecc" type="number" value="0.001" min="0" max="0.9" step="0.001">
+          </div>
+          <div>
+            <label for="dur">Durata simulazione (minuti)</label>
+            <input id="dur" type="number" value="96" min="10" max="600" step="1">
+          </div>
+          <div>
+            <label for="dt">Δt integrazione (secondi)</label>
+            <input id="dt" type="number" value="20" min="1" max="120" step="1">
+          </div>
+          <div class="row">
+            <button id="run">▶️ Simula/Redraw</button>
+            <button id="play">⏯️ Play/Pause</button>
+            <button id="reset">🔄 Reset</button>
+            <button id="btnInstall" hidden>➕ Installa App</button>
+          </div>
+          <div id="status" class="pill">Stato: inizializzazione…</div>
+          <pre id="log" style="max-height:160px">Log…</pre>
+        </div>
+      </section>
+    </div>
+
+    <section class="card">
+      <h3>Dettagli</h3>
+      <ul>
+        <li>Modello: due corpi (μ = 398600.4418 km³/s²), piano equatoriale (2D).</li>
+        <li>Parametri: perigeo (da altitudine), eccentricità, durata, passo.</li>
+        <li>Output Python → array posizioni XY in km → disegno canvas + animazione.</li>
+      </ul>
+    </section>
+
+    <footer>
+      MIT © 2025 — pezzaliAPP.com • CubeSat Orbit Demo (PWA + Pyodide)
+    </footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.0/full/pyodide.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
