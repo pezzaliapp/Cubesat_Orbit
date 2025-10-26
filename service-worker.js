@@ -1,5 +1,5 @@
 /* CubeSat Orbit — Service Worker (MIT 2025) */
-const CACHE = 'cubesat-orbit-v1';
+const CACHE = 'cubesat-orbit-v2';
 const ASSETS = [
   './',
   './index.html',

@@ -149,7 +149,7 @@ async function simulate(){
   const dt = Math.max(1, Number(elDt.value||20));
   try{
     elStatus.textContent = 'Calcolo orbita…';
-    const code = `import main\nmain.propagate_from_perigee(${alt}, ${ecc}, ${int(durMin*60)}, ${int(dt)})`;
+    const code = `import main\nmain.propagate_from_perigee(${alt}, ${ecc}, ${Math.floor(durMin*60)}, ${Math.floor(dt)})`;
     const res = await pyodide.runPythonAsync(code);
     // res is a Python list of tuples -> converted to JS automatically
     orbit = res.map(r=>({x:r[0], y:r[1], t:r[2]}));
